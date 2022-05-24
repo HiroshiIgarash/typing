@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>タイピングゲーム</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <h1>タイピングゲーム</h1>
+
+    <p>にじさんじのライバーの英語名をタイピングしよう。<br>タイムオーバーか50ミスでゲームオーバー</p>
+
+    <!-- <p>Score:<span id="Score">0</span></p>
+    <p>Miss:<span id="Miss">0</span></p>
+    <p>Combo:<span id="Combo">0</span></p>
+    <p>Max Combo:<span id="MaxCombo">0</span></p>
+    <p>type:<span id="Type">0</span></p> -->
+
+    <!-- <p>残り時間:<span id="Timer">10</span></p> -->
+
+    <div class="game-box">
+        <div class="timebar">
+             残り時間
+            <div class="bar"></div>
+        </div>
+        <p id="ja"></p>
+        <p id="theme"></p>
+        <div class="scorebar-box">
+            スコア
+           <div class="scorebar"></div>
+           <div class="scorebar-outer">
+               <div></div>
+               <div></div>
+               <div></div>
+               <div></div>
+               <div></div>
+               <div></div>
+           </div>
+       </div>
+        <input id="nyuryoku" type="text" autofocus>
+
+        <!-- スタート画面 -->
+        <div class="menu">
+            <p class="centerMessage">スペースキーで開始</p>
+            <p class="underMessage">日本語入力をオフにしてください</p>
+        </div>
+
+        <!-- リザルト画面 -->
+        <div class="result">
+            <div class="result-table">
+                <table border="1">
+                    <tbody>
+                        <tr>
+                            <th>スコア</th>
+                            <td class="score">200</td>
+                        </tr>
+                        <tr>
+                            <th>タイプ数</th>
+                            <td class="type">200</td>
+                        </tr>
+                        <tr>
+                            <th>ミス数</th>
+                            <td class="miss">0</td>
+                        </tr>
+                        <tr>
+                            <th>ミス率</th>
+                            <td class="missper">0</td>
+                        </tr>
+                        <tr>
+                            <th>Maxコンボ</th>
+                            <td class="maxCombo">200</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div><!-- /.result-table -->
+            <div class="result-message">
+                <p>あなたのにじさんじタイピング力は</p>
+                <p class="result-rank">A++ランク</p>
+                <p class="result-restart">スペースキーで再挑戦</p>
+            </div><!-- / -->
+        </div>
+    </div>
+
+
+    <!-- <table>
+        <tbody>
+            <tr>
+                <th><a href="/nijisanji/%E6%9C%88%E3%83%8E%E7%BE%8E%E5%85%8E" title="月ノ美兎"
+                        class="rel-wiki-page">月ノ美兎</a></th>
+                <td>Tsukino Mito</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E5%8B%87%E6%B0%97%E3%81%A1%E3%81%B2%E3%82%8D" title="勇気ちひろ"
+                        class="rel-wiki-page">勇気ちひろ</a></th>
+                <td>Yuki Chihiro</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E3%81%88%E3%82%8B" title="える" class="rel-wiki-page">える</a></th>
+                <td>Elu</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E6%A8%8B%E5%8F%A3%E6%A5%93" title="樋口楓" class="rel-wiki-page">樋口楓</a></th>
+                <td>Higuchi Kaede</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E9%9D%99%E5%87%9B" title="静凛" class="rel-wiki-page">静凛</a></th>
+                <td>Shizuka Rin</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E6%B8%8B%E8%B0%B7%E3%83%8F%E3%82%B8%E3%83%A1" title="渋谷ハジメ"
+                        class="rel-wiki-page">渋谷ハジメ</a></th>
+                <td>Shibuya Hajime</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E9%88%B4%E8%B0%B7%E3%82%A2%E3%82%AD" title="鈴谷アキ"
+                        class="rel-wiki-page">鈴谷アキ</a></th>
+                <td>Suzuya Aki</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E3%83%A2%E3%82%A4%E3%83%A9" title="モイラ" class="rel-wiki-page">モイラ</a></th>
+                <td>Moira</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E9%88%B4%E9%B9%BF%E8%A9%A9%E5%AD%90" title="鈴鹿詩子"
+                        class="rel-wiki-page">鈴鹿詩子</a></th>
+                <td>Suzuka Utako</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E5%AE%87%E5%BF%97%E6%B5%B7%E3%81%84%E3%81%A1%E3%81%94" title="宇志海いちご"
+                        class="rel-wiki-page">宇志海いちご</a></th>
+                <td>Ushimi Ichigo</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E5%AE%B6%E9%95%B7%E3%82%80%E3%81%8E" title="家長むぎ"
+                        class="rel-wiki-page">家長むぎ</a></th>
+                <td>Ienaga Mugi</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E5%A4%95%E9%99%BD%E3%83%AA%E3%83%AA" title="夕陽リリ"
+                        class="rel-wiki-page">夕陽リリ</a></th>
+                <td>Yuhi Riri</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E7%89%A9%E8%BF%B0%E6%9C%89%E6%A0%96" title="物述有栖"
+                        class="rel-wiki-page">物述有栖</a></th>
+                <td>Mononobe Alice</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E6%96%87%E9%87%8E%E7%92%B0" title="文野環" class="rel-wiki-page">文野環</a></th>
+                <td>Fumino Tamaki</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E4%BC%8F%E8%A6%8B%E3%82%AC%E3%82%AF" title="伏見ガク"
+                        class="rel-wiki-page">伏見ガク</a></th>
+                <td>Fushimi Gaku</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E3%82%AE%E3%83%AB%E3%82%B6%E3%83%AC%E3%83%B3III%E4%B8%96" title="ギルザレンIII世"
+                        class="rel-wiki-page">ギルザレンIII世</a></th>
+                <td>Gilzaren III</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E5%89%A3%E6%8C%81%E5%88%80%E4%B9%9F" title="剣持刀也"
+                        class="rel-wiki-page">剣持刀也</a></th>
+                <td>Kenmochi Toya</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E6%A3%AE%E4%B8%AD%E8%8A%B1%E5%92%B2" title="森中花咲"
+                        class="rel-wiki-page">森中花咲</a></th>
+                <td>Morinaka Kazaki</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E5%8F%B6" title="叶" class="rel-wiki-page">叶</a></th>
+                <td>Kanae</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E8%B5%A4%E7%BE%BD%E8%91%89%E5%AD%90" title="赤羽葉子"
+                        class="rel-wiki-page">赤羽葉子</a></th>
+                <td>Akabane Youko</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E7%AC%B9%E6%9C%A8%E5%92%B2" title="笹木咲" class="rel-wiki-page">笹木咲</a></th>
+                <td>Sasaki Saku</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E9%97%87%E5%A4%9C%E4%B9%83%E3%83%A2%E3%83%AB%E3%83%AB" title="闇夜乃モルル"
+                        class="rel-wiki-page">闇夜乃モルル</a></th>
+                <td>Yamiyono Moruru</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E6%9C%AC%E9%96%93%E3%81%B2%E3%81%BE%E3%82%8F%E3%82%8A" title="本間ひまわり"
+                        class="rel-wiki-page">本間ひまわり</a></th>
+                <td>Honma Himawari</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E9%AD%94%E7%95%8C%E3%83%8E%E3%82%8A%E3%82%8A%E3%82%80" title="魔界ノりりむ"
+                        class="rel-wiki-page">魔界ノりりむ</a></th>
+                <td>Makaino Ririmu</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E8%91%9B%E8%91%89" title="葛葉" class="rel-wiki-page">葛葉</a></th>
+                <td>Kuzuha</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E9%9B%AA%E6%B1%9D" title="雪汝" class="rel-wiki-page">雪汝</a></th>
+                <td>Setsuna</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E6%A4%8E%E5%90%8D%E5%94%AF%E8%8F%AF" title="椎名唯華"
+                        class="rel-wiki-page">椎名唯華</a></th>
+                <td>Shiina Yuika</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E3%83%89%E3%83%BC%E3%83%A9" title="ドーラ" class="rel-wiki-page">ドーラ</a></th>
+                <td>Dola</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E6%B5%B7%E5%A4%9C%E5%8F%89%E7%A5%9E" title="海夜叉神"
+                        class="rel-wiki-page">海夜叉神</a></th>
+                <td>Umiyashanokami</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E5%90%8D%E4%BC%BD%E5%B0%BE%E3%82%A2%E3%82%BA%E3%83%9E" title="名伽尾アズマ"
+                        class="rel-wiki-page">名伽尾アズマ</a></th>
+                <td>Nakao Azuma</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E5%87%BA%E9%9B%B2%E9%9C%9E" title="出雲霞" class="rel-wiki-page">出雲霞</a></th>
+                <td>Izumo Kasumi</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E8%BD%9F%E4%BA%AC%E5%AD%90" title="轟京子" class="rel-wiki-page">轟京子</a></th>
+                <td>Todoroki Kyoko</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E3%82%B7%E3%82%B9%E3%82%BF%E3%83%BC%E3%83%BB%E3%82%AF%E3%83%AC%E3%82%A2"
+                        title="シスター・クレア" class="rel-wiki-page">シスター・クレア</a></th>
+                <td>Sister Claire<a id="notetext_237" class="note_super tooltip" data-tippy-theme="light"
+                        data-tippy-allowhtml="true" data-tippy-interactive="true"
+                        data-tippy-content="<p><a class=&quot;ext&quot; href=&quot;https://twitter.com/sistercleaire/status/1107889701464137729&quot;  rel=&quot;nofollow&quot;>2019年3月<img src=&quot;https://cdn.wikiwiki.jp/to/w/common/image/plus/ext.png?v=4&quot; alt=&quot;&quot; title=&quot;&quot; class=&quot;ext pukiwiki-open-uri&quot; data-href=&quot;https://twitter.com/sistercleaire/status/1107889701464137729&quot; data-frame=&quot;_blank&quot; /></a>頃、外国の方も読みやすいよう&amp;quot;Cleaire&amp;quot;から活動上の表記を変更。Twitterのユーザー名に痕跡が残る。</p><div style=&quot;text-align: right;&quot;><a href=&quot;#notefoot_237&quot;>脚注 *237 へ</a></div>">*237</a>
+                </td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E8%8A%B1%E7%95%91%E3%83%81%E3%83%A3%E3%82%A4%E3%82%AB" title="花畑チャイカ"
+                        class="rel-wiki-page">花畑チャイカ</a></th>
+                <td>Hanabatake Chaika</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E7%A4%BE%E7%AF%89" title="社築" class="rel-wiki-page">社築</a></th>
+                <td>Yashiro Kizuku</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E5%AE%89%E5%9C%9F%E6%A1%83" title="安土桃" class="rel-wiki-page">安土桃</a></th>
+                <td>Azuchi Momo<a id="notetext_238" class="note_super tooltip" data-tippy-theme="light"
+                        data-tippy-allowhtml="true" data-tippy-interactive="true"
+                        data-tippy-content="<p>2020年2月、<a class=&quot;ext&quot; href=&quot;https://twitter.com/momo_azuchi_/status/1231416003323523073&quot;  rel=&quot;nofollow&quot;>Twitterのユーザー名<img src=&quot;https://cdn.wikiwiki.jp/to/w/common/image/plus/ext.png?v=4&quot; alt=&quot;&quot; title=&quot;&quot; class=&quot;ext pukiwiki-open-uri&quot; data-href=&quot;https://twitter.com/momo_azuchi_/status/1231416003323523073&quot; data-frame=&quot;_blank&quot; /></a>と併せて&amp;quot;Aduchi&amp;quot;から表記変更。<a class=&quot;ext&quot; href=&quot;https://twitter.com/nijisanji_app/status/1372821399753027589&quot;  rel=&quot;nofollow&quot;>2021年3月の公式サイトリニューアル<img src=&quot;https://cdn.wikiwiki.jp/to/w/common/image/plus/ext.png?v=4&quot; alt=&quot;&quot; title=&quot;&quot; class=&quot;ext pukiwiki-open-uri&quot; data-href=&quot;https://twitter.com/nijisanji_app/status/1372821399753027589&quot; data-frame=&quot;_blank&quot; /></a>まで<a class=&quot;ext&quot; href=&quot;https://nijisanji.ichikara.co.jp/member/Momo-Aduchi/&quot;  rel=&quot;nofollow&quot;>プロフィールページ<img src=&quot;https://cdn.wikiwiki.jp/to/w/common/image/plus/ext.png?v=4&quot; alt=&quot;&quot; title=&quot;&quot; class=&quot;ext pukiwiki-open-uri&quot; data-href=&quot;https://nijisanji.ichikara.co.jp/member/Momo-Aduchi/&quot; data-frame=&quot;_blank&quot; /></a>のURLに痕跡が残っていた。</p><div style=&quot;text-align: right;&quot;><a href=&quot;#notefoot_238&quot;>脚注 *238 へ</a></div>">*238</a>
+                </td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E9%88%B4%E6%9C%A8%E5%8B%9D" title="鈴木勝" class="rel-wiki-page">鈴木勝</a></th>
+                <td>Suzuki Masaru</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E7%B7%91%E4%BB%99" title="緑仙" class="rel-wiki-page">緑仙</a></th>
+                <td>Ryushen</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E5%8D%AF%E6%9C%88%E3%82%B3%E3%82%A6" title="卯月コウ"
+                        class="rel-wiki-page">卯月コウ</a></th>
+                <td>Uzuki Kou</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E5%85%AB%E6%9C%94%E3%82%86%E3%81%9A" title="八朔ゆず"
+                        class="rel-wiki-page">八朔ゆず</a></th>
+                <td>Hassaku Yuzu</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E7%A5%9E%E7%94%B0%E7%AC%91%E4%B8%80" title="神田笑一"
+                        class="rel-wiki-page">神田笑一</a></th>
+                <td>Kanda Shoichi</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E9%B3%B4%E9%96%80%E3%81%93%E3%81%8C%E3%81%AD" title="鳴門こがね"
+                        class="rel-wiki-page">鳴門こがね</a></th>
+                <td>Naruto Kogane</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E9%A3%9B%E9%B3%A5%E3%81%B2%E3%81%AA" title="飛鳥ひな"
+                        class="rel-wiki-page">飛鳥ひな</a></th>
+                <td>Asuka Hina</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E6%98%A5%E5%B4%8E%E3%82%A8%E3%82%A2%E3%83%AB" title="春崎エアル"
+                        class="rel-wiki-page">春崎エアル</a></th>
+                <td>Harusaki Air</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E9%9B%A8%E6%A3%AE%E5%B0%8F%E5%A4%9C" title="雨森小夜"
+                        class="rel-wiki-page">雨森小夜</a></th>
+                <td>Amemori Sayo</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E9%B7%B9%E5%AE%AE%E3%83%AA%E3%82%AA%E3%83%B3" title="鷹宮リオン"
+                        class="rel-wiki-page">鷹宮リオン</a></th>
+                <td>Takamiya Rion</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E8%88%9E%E5%85%83%E5%95%93%E4%BB%8B" title="舞元啓介"
+                        class="rel-wiki-page">舞元啓介</a></th>
+                <td>Maimoto Keisuke</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E7%AB%9C%E8%83%86%E5%B0%8A" title="竜胆尊" class="rel-wiki-page">竜胆尊</a></th>
+                <td>Rindou Mikoto</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E3%81%A7%E3%81%B3%E3%81%A7%E3%81%B3%E3%83%BB%E3%81%A7%E3%81%B3%E3%82%8B"
+                        title="でびでび・でびる" class="rel-wiki-page">でびでび・でびる</a></th>
+                <td>Debidebi Debiru</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E6%A1%9C%E5%87%9B%E6%9C%88" title="桜凛月" class="rel-wiki-page">桜凛月</a></th>
+                <td>Sakura Ritsuki</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E7%94%BA%E7%94%B0%E3%81%A1%E3%81%BE" title="町田ちま"
+                        class="rel-wiki-page">町田ちま</a></th>
+                <td>Machita Chima</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E6%9C%88%E8%A6%8B%E3%81%97%E3%81%9A%E3%81%8F" title="月見しずく"
+                        class="rel-wiki-page">月見しずく</a></th>
+                <td>Tsukimi Shizuku</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E3%82%B8%E3%83%A7%E3%83%BC%E3%83%BB%E5%8A%9B%E4%B8%80" title="ジョー・力一"
+                        class="rel-wiki-page">ジョー・力一</a></th>
+                <td>Joe Rikiichi</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E9%81%A0%E5%8C%97%E5%8D%83%E5%8D%97" title="遠北千南"
+                        class="rel-wiki-page">遠北千南</a></th>
+                <td>Achikita Chinami</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E6%88%90%E7%80%AC%E9%B3%B4" title="成瀬鳴" class="rel-wiki-page">成瀬鳴</a></th>
+                <td>Naruse Naru</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E3%83%99%E3%83%AB%E3%83%A2%E3%83%B3%E3%83%89%E3%83%BB%E3%83%90%E3%83%B3%E3%83%87%E3%83%A9%E3%82%B9"
+                        title="ベルモンド・バンデラス" class="rel-wiki-page">ベルモンド・バンデラス</a></th>
+                <td>Belmond Banderas</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E7%9F%A2%E8%BB%8A%E3%82%8A%E3%81%AD" title="矢車りね"
+                        class="rel-wiki-page">矢車りね</a></th>
+                <td>Yaguruma Rine</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E5%A4%A2%E8%BF%BD%E7%BF%94" title="夢追翔" class="rel-wiki-page">夢追翔</a></th>
+                <td>Yumeoi Kakeru</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E9%BB%92%E4%BA%95%E3%81%97%E3%81%B0" title="黒井しば"
+                        class="rel-wiki-page">黒井しば</a></th>
+                <td>Kuroi Shiba</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E7%AB%A5%E7%94%B0%E6%98%8E%E6%B2%BB" title="童田明治"
+                        class="rel-wiki-page">童田明治</a></th>
+                <td>Warabeda Meiji</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E4%B9%85%E9%81%A0%E5%8D%83%E6%AD%B3" title="久遠千歳"
+                        class="rel-wiki-page">久遠千歳</a></th>
+                <td>Kudo Chitose</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E9%83%A1%E9%81%93%E7%BE%8E%E7%8E%B2" title="郡道美玲"
+                        class="rel-wiki-page">郡道美玲</a></th>
+                <td>Gundo Mirei</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E5%A4%A2%E6%9C%88%E3%83%AD%E3%82%A2" title="夢月ロア"
+                        class="rel-wiki-page">夢月ロア</a></th>
+                <td>Yuzuki Roa</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E5%B0%8F%E9%87%8E%E7%94%BA%E6%98%A5%E9%A6%99" title="小野町春香"
+                        class="rel-wiki-page">小野町春香</a></th>
+                <td>Onomachi Haruka</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E8%AA%9E%E9%83%A8%E7%B4%A1" title="語部紡" class="rel-wiki-page">語部紡</a></th>
+                <td>Kataribe Tsumugu</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E7%80%AC%E6%88%B8%E7%BE%8E%E5%A4%9C%E5%AD%90" title="瀬戸美夜子"
+                        class="rel-wiki-page">瀬戸美夜子</a></th>
+                <td>Seto Miyako</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E5%BE%A1%E4%BC%BD%E5%8E%9F%E6%B1%9F%E8%89%AF" title="御伽原江良"
+                        class="rel-wiki-page">御伽原江良</a></th>
+                <td>Otogibara Era</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E6%88%8C%E4%BA%A5%E3%81%A8%E3%81%93" title="戌亥とこ"
+                        class="rel-wiki-page">戌亥とこ</a></th>
+                <td>Inui Toko</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E3%82%A2%E3%83%B3%E3%82%B8%E3%83%A5%E3%83%BB%E3%82%AB%E3%83%88%E3%83%AA%E3%83%BC%E3%83%8A"
+                        title="アンジュ・カトリーナ" class="rel-wiki-page">アンジュ・カトリーナ</a></th>
+                <td>Ange Katrina</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E3%83%AA%E3%82%BC%E3%83%BB%E3%83%98%E3%83%AB%E3%82%A8%E3%82%B9%E3%82%BF"
+                        title="リゼ・ヘルエスタ" class="rel-wiki-page">リゼ・ヘルエスタ</a></th>
+                <td>Lize Helesta</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E4%B8%89%E6%9E%9D%E6%98%8E%E9%82%A3" title="三枝明那"
+                        class="rel-wiki-page">三枝明那</a></th>
+                <td>Saegusa Akina</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E6%84%9B%E5%9C%92%E6%84%9B%E7%BE%8E" title="愛園愛美"
+                        class="rel-wiki-page">愛園愛美</a></th>
+                <td>Aizono Manami</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E9%88%B4%E5%8E%9F%E3%82%8B%E3%82%8B" title="鈴原るる"
+                        class="rel-wiki-page">鈴原るる</a></th>
+                <td>Suzuhara Lulu</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E9%9B%AA%E5%9F%8E%E7%9C%9E%E5%B0%8B" title="雪城眞尋"
+                        class="rel-wiki-page">雪城眞尋</a></th>
+                <td>Yukishiro Mahiro</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E3%82%A8%E3%82%AF%E3%82%B9%E3%83%BB%E3%82%A2%E3%83%AB%E3%83%93%E3%82%AA"
+                        title="エクス・アルビオ" class="rel-wiki-page">エクス・アルビオ</a></th>
+                <td>Ex Albio</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E3%83%AC%E3%83%B4%E3%82%A3%E3%83%BB%E3%82%A8%E3%83%AA%E3%83%95%E3%82%A1"
+                        title="レヴィ・エリファ" class="rel-wiki-page">レヴィ・エリファ</a></th>
+                <td>Levi Elipha</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E8%91%89%E5%B1%B1%E8%88%9E%E9%88%B4" title="葉山舞鈴"
+                        class="rel-wiki-page">葉山舞鈴</a></th>
+                <td>Hayama Marin</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E3%83%8B%E3%83%A5%E3%82%A4%E3%83%BB%E3%82%BD%E3%82%B7%E3%82%A8%E3%83%BC%E3%83%AB"
+                        title="ニュイ・ソシエール" class="rel-wiki-page">ニュイ・ソシエール</a></th>
+                <td>Nui Sociere</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E8%91%89%E5%8A%A0%E7%80%AC%E5%86%AC%E9%9B%AA" title="葉加瀬冬雪"
+                        class="rel-wiki-page">葉加瀬冬雪</a></th>
+                <td>Hakase Fuyuki</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E5%8A%A0%E8%B3%80%E7%BE%8E%E3%83%8F%E3%83%A4%E3%83%88" title="加賀美ハヤト"
+                        class="rel-wiki-page">加賀美ハヤト</a></th>
+                <td>Kagami Hayato</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E5%A4%9C%E8%A6%8B%E3%82%8C%E3%81%AA" title="夜見れな"
+                        class="rel-wiki-page">夜見れな</a></th>
+                <td>Yorumi Rena</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E9%BB%9B%E7%81%B0" title="黛灰" class="rel-wiki-page">黛灰</a></th>
+                <td>Mayuzumi Kai</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E3%82%A2%E3%83%AB%E3%82%B9%E3%83%BB%E3%82%A2%E3%83%AB%E3%83%9E%E3%83%AB"
+                        title="アルス・アルマル" class="rel-wiki-page">アルス・アルマル</a></th>
+                <td>Ars Almal</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E7%9B%B8%E7%BE%BD%E3%81%86%E3%81%84%E3%81%AF" title="相羽ういは"
+                        class="rel-wiki-page">相羽ういは</a></th>
+                <td>Aiba Uiha</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E5%A4%A9%E5%AE%AE%E3%81%93%E3%81%93%E3%82%8D" title="天宮こころ"
+                        class="rel-wiki-page">天宮こころ</a></th>
+                <td>Amamiya Kokoro</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E3%82%A8%E3%83%AA%E3%83%BC%E3%83%BB%E3%82%B3%E3%83%8B%E3%83%95%E3%82%A1%E3%83%BC"
+                        title="エリー・コニファー" class="rel-wiki-page">エリー・コニファー</a></th>
+                <td>Eli Conifer</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E3%83%A9%E3%83%88%E3%83%8A%E3%83%BB%E3%83%97%E3%83%86%E3%82%A3" title="ラトナ・プティ"
+                        class="rel-wiki-page">ラトナ・プティ</a></th>
+                <td>Ratna Petit</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E6%97%A9%E7%80%AC%E8%B5%B0" title="早瀬走" class="rel-wiki-page">早瀬走</a></th>
+                <td>Hayase Sou</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E5%81%A5%E5%B1%8B%E8%8A%B1%E9%82%A3" title="健屋花那"
+                        class="rel-wiki-page">健屋花那</a></th>
+                <td>Sukoya Kana</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E3%82%B7%E3%82%A7%E3%83%AA%E3%83%B3%E3%83%BB%E3%83%90%E3%83%BC%E3%82%AC%E3%83%B3%E3%83%87%E3%82%A3"
+                        title="シェリン・バーガンディ" class="rel-wiki-page">シェリン・バーガンディ</a></th>
+                <td>Shellin Burgundy</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E3%83%95%E3%83%9F" title="フミ" class="rel-wiki-page">フミ</a></th>
+                <td>Fumi</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E6%98%9F%E5%B7%9D%E3%82%B5%E3%83%A9" title="星川サラ"
+                        class="rel-wiki-page">星川サラ</a></th>
+                <td>Hoshikawa Sara</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E5%B1%B1%E7%A5%9E%E3%82%AB%E3%83%AB%E3%82%BF" title="山神カルタ"
+                        class="rel-wiki-page">山神カルタ</a></th>
+                <td>Yamagami Karuta</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E3%81%88%E3%81%BE%E2%98%85%E3%81%8A%E3%81%86%E3%81%8C%E3%81%99%E3%81%A8"
+                        title="えま★おうがすと" class="rel-wiki-page">えま★おうがすと</a></th>
+                <td>Emma August</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E3%83%AB%E3%82%A4%E3%82%B9%E3%83%BB%E3%82%AD%E3%83%A3%E3%83%9F%E3%83%BC"
+                        title="ルイス・キャミー" class="rel-wiki-page">ルイス・キャミー</a></th>
+                <td>Luis Cammy</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E9%AD%94%E4%BD%BF%E3%83%9E%E3%82%AA" title="魔使マオ"
+                        class="rel-wiki-page">魔使マオ</a></th>
+                <td>Matsukai Mao</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E4%B8%8D%E7%A0%B4%E6%B9%8A" title="不破湊" class="rel-wiki-page">不破湊</a></th>
+                <td>Fuwa Minato</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E7%99%BD%E9%9B%AA%E5%B7%B4" title="白雪巴" class="rel-wiki-page">白雪巴</a></th>
+                <td>Shirayuki Tomoe</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E3%82%B0%E3%82%A6%E3%82%A7%E3%83%AB%E3%83%BB%E3%82%AA%E3%82%B9%E3%83%BB%E3%82%AC%E3%83%BC%E3%83%AB"
+                        title="グウェル・オス・ガール" class="rel-wiki-page">グウェル・オス・ガール</a></th>
+                <td>Gwelu Os Gar</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E3%81%BE%E3%81%97%E3%82%8D" title="ましろ" class="rel-wiki-page">ましろ</a></th>
+                <td>Mashiro</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E5%A5%88%E7%BE%85%E8%8A%B1" title="奈羅花" class="rel-wiki-page">奈羅花</a></th>
+                <td>Naraka</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E6%9D%A5%E6%A0%96%E5%A4%8F%E8%8A%BD" title="来栖夏芽"
+                        class="rel-wiki-page">来栖夏芽</a></th>
+                <td>Kurusu Natsume</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E3%83%95%E3%83%AC%E3%83%B3%E3%83%BBE%E3%83%BB%E3%83%AB%E3%82%B9%E3%82%BF%E3%83%AA%E3%82%AA"
+                        title="フレン・E・ルスタリオ" class="rel-wiki-page">フレン・E・ルスタリオ</a></th>
+                <td>Furen E Lustario</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E3%83%A1%E3%83%AA%E3%83%83%E3%82%B5%E3%83%BB%E3%82%AD%E3%83%B3%E3%83%AC%E3%83%B3%E3%82%AB"
+                        title="メリッサ・キンレンカ" class="rel-wiki-page">メリッサ・キンレンカ</a></th>
+                <td>Melissa Kinrenka</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E3%82%A4%E3%83%96%E3%83%A9%E3%83%92%E3%83%A0" title="イブラヒム"
+                        class="rel-wiki-page">イブラヒム</a></th>
+                <td>Ibrahim</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E9%95%B7%E5%B0%BE%E6%99%AF" title="長尾景" class="rel-wiki-page">長尾景</a></th>
+                <td>Nagao Kei</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E5%BC%A6%E6%9C%88%E8%97%A4%E5%A3%AB%E9%83%8E" title="弦月藤士郎"
+                        class="rel-wiki-page">弦月藤士郎</a></th>
+                <td>Genzuki Tojiro</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E7%94%B2%E6%96%90%E7%94%B0%E6%99%B4" title="甲斐田晴"
+                        class="rel-wiki-page">甲斐田晴</a></th>
+                <td>Kaida Haru</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E7%A9%BA%E6%98%9F%E3%81%8D%E3%82%89%E3%82%81" title="空星きらめ"
+                        class="rel-wiki-page">空星きらめ</a></th>
+                <td>Sorahoshi Kirame</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E6%9C%9D%E6%97%A5%E5%8D%97%E3%82%A2%E3%82%AB%E3%83%8D" title="朝日南アカネ"
+                        class="rel-wiki-page">朝日南アカネ</a></th>
+                <td>Asahina Akane</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E5%91%A8%E5%A4%AE%E3%82%B5%E3%83%B3%E3%82%B4" title="周央サンゴ"
+                        class="rel-wiki-page">周央サンゴ</a></th>
+                <td>Suo Sango</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E6%9D%B1%E5%A0%82%E3%82%B3%E3%83%8F%E3%82%AF" title="東堂コハク"
+                        class="rel-wiki-page">東堂コハク</a></th>
+                <td>Todo Kohaku</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E5%8C%97%E5%B0%8F%E8%B7%AF%E3%83%92%E3%82%B9%E3%82%A4" title="北小路ヒスイ"
+                        class="rel-wiki-page">北小路ヒスイ</a></th>
+                <td>Kitakoji Hisui</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E8%A5%BF%E5%9C%92%E3%83%81%E3%82%B0%E3%82%B5" title="西園チグサ"
+                        class="rel-wiki-page">西園チグサ</a></th>
+                <td>Nishizono Chigusa</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E3%82%A2%E3%82%AF%E3%82%B7%E3%82%A2%E3%83%BB%E3%82%AF%E3%83%AD%E3%83%BC%E3%83%8D"
+                        title="アクシア・クローネ" class="rel-wiki-page">アクシア・クローネ</a></th>
+                <td>Axia Krone</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E3%83%AD%E3%83%BC%E3%83%AC%E3%83%B3%E3%83%BB%E3%82%A4%E3%83%AD%E3%82%A2%E3%82%B9"
+                        title="ローレン・イロアス" class="rel-wiki-page">ローレン・イロアス</a></th>
+                <td>Lauren Iroas</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E3%83%AC%E3%82%AA%E3%82%B9%E3%83%BB%E3%83%B4%E3%82%A3%E3%83%B3%E3%82%BB%E3%83%B3%E3%83%88"
+                        title="レオス・ヴィンセント" class="rel-wiki-page">レオス・ヴィンセント</a></th>
+                <td>Leos Vincent</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E3%82%AA%E3%83%AA%E3%83%90%E3%83%BC%E3%83%BB%E3%82%A8%E3%83%90%E3%83%B3%E3%82%B9"
+                        title="オリバー・エバンス" class="rel-wiki-page">オリバー・エバンス</a></th>
+                <td>Oliver Evans</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E3%83%AC%E3%82%A4%E3%83%B3%E3%83%BB%E3%83%91%E3%82%BF%E3%83%BC%E3%82%BD%E3%83%B3"
+                        title="レイン・パターソン" class="rel-wiki-page">レイン・パターソン</a></th>
+                <td>Lain Paterson</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E5%A4%A9%E3%83%B6%E7%80%AC%E3%82%80%E3%82%86" title="天ヶ瀬むゆ"
+                        class="rel-wiki-page">天ヶ瀬むゆ</a></th>
+                <td>Amagase Muyu</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E5%85%88%E6%96%97%E5%AF%A7" title="先斗寧" class="rel-wiki-page">先斗寧</a></th>
+                <td>Ponto Nei</td>
+            </tr>
+            <tr>
+                <th><a href="/nijisanji/%E6%B5%B7%E5%A6%B9%E5%9B%9B%E8%91%89" title="海妹四葉"
+                        class="rel-wiki-page">海妹四葉</a></th>
+                <td>Umise Yotsuha</td>
+            </tr>
+        </tbody>
+    </table> -->
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>
