@@ -61,8 +61,8 @@ $("#nyuryoku").on("input",()=>{
 
     //menu画面の時
     if(gameover){
-        //スペースキーでゲーム開始
-        if(val==" "){
+        //Shift + X でゲーム開始
+        if(val=="X"){
             gameover=false;
             init();
             $(".menu").hide();
@@ -221,22 +221,3 @@ $("#nyuryoku").on("blur",()=>{
     $("#nyuryoku").focus();
 })
 
-
-
-// let data2=[]
-
-// t=$("table tbody").children().length;
-
-// for(let i=0;i<t;i++){
-    //     kana=$(`table tbody tr:nth-child(${i+1}) th a`).text()
-    //     eigo=$(`table tbody tr:nth-child(${i+1}) td`).text()
-    
-    //     obj={
-        //         kana,
-        //         eigo
-        //     }
-//     data2.push(obj)
-// }
-
-// aaa=JSON.stringify(data2)
-// console.log(aaa)
