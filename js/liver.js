@@ -147,4 +147,9 @@ data = [
   { "kana": "北見遊征", "eigo": "Kitami Yusei" },
   { "kana": "魁星", "eigo": "Kaisei" },
   { "kana": "榊ネス", "eigo": "Sakaki Ness" },
+  { "kana": "司賀りこ", "eigo": "Shiga Riko" },
+  { "kana": "珠乃井ナナ", "eigo": "Tamanoi Nana" },
+  { "kana": "綺沙良", "eigo": "Kisara" },
+  { "kana": "梢桃音", "eigo": "Kozue Mone" },
+  { "kana": "ルンルン", "eigo": "Lunlun" },
 ]
